@@ -6,5 +6,4 @@ from Game import *
 
 #---------- Main Routine ----------#
 game = Game()
-
 game.start()
