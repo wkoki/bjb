@@ -33,11 +33,7 @@ class Game (object):
         board = Board()
 
         while(True):
-            # ターン数をインクリメンド
-            board.turn += 1
-
             for i in range(self.np):
-
                 # ショット中のプレイヤーをplayerに格納
                 player = self.player_list[i]
 
@@ -62,9 +58,11 @@ class Game (object):
                         else:
                             player.drop(board, ball)
 
+            # ターン数をインクリメンド
+            board.turn += 1
+
             if self.judge_end():
                 self.show_rank()
-                quit()
 
 
     def judge_end(self):
@@ -98,6 +96,13 @@ class Game (object):
             return 0
 
     def compmax(self, x, y):
+        if len(x.myfalls) == 0 and len(y.myfalls) == 0:
+            return 0
+        elif len(x.myfalls) == 0 and not(len(y.myfalls) == 0):
+            return -1
+        elif not(len(x.myfalls) == 0) and len(y.myfalls) == 0:
+            return 1
+
         a = max(x.myfalls)
         b = max(y.myfalls)
         if a > b:
@@ -114,5 +119,16 @@ class Game (object):
         self.player_list.sort(cmp=self.compturn)
         self.player_list.sort(cmp=self.compmax)
         self.player_list.sort(cmp=self.comp21)
-        for player in self.player_list:
-            print(player.name)
+        for i in range(len(self.player_list)):
+            print(str(i+1) + "位:" + self.player_list[i].name)
+            quit()
+
+
+    def comp_rank(self, x, y):
+        if x > y:
+            return -1
+        else:
+            return 0
+
+    def sort_rank(self, x, y):
+        self.player_list.sort(cmp=self.comp_rank)
